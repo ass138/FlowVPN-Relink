@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>FlowVPN Relink</title>
+  <script>
+    window.onload = function() {
+      // Получаем аргумент из URL
+      const match = window.location.pathname.match(/key=(.+)/);
+      if (match && match[1]) {
+        const key = decodeURIComponent(match[1]);
+        // Формируем ссылку
+        const hiddifyUrl = "hiddify://import/" + key;
+        // Редиректим пользователя
+        window.location.href = hiddifyUrl;
+      } else {
+        document.body.innerHTML = "<h2>Аргумент не найден в URL!</h2>";
+      }
+    };
+  </script>
+</head>
+<body>
+  <h2>Перенаправление...</h2>
+</body>
+</html> 
