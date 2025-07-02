@@ -4,21 +4,47 @@
   <meta charset="UTF-8">
   <title>FlowVPN Relink</title>
   <script>
+    function openApp(url) {
+      // Метод 1: Создаём и кликаем по ссылке
+      const link = document.createElement('a');
+      link.href = url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Метод 2: Через location.href
+      setTimeout(() => {
+        window.location.href = url;
+      }, 100);
+    }
+    
     window.onload = function() {
-      const path = window.location.pathname.toLowerCase();
       const params = new URLSearchParams(window.location.search);
       const key = params.get('key');
+      const platform = (params.get('platform') || '').toLowerCase();
+      
       if (!key) {
         document.body.innerHTML = "<h2>Аргумент не найден в URL!</h2>";
         return;
       }
-      if (path.includes('/android') || path.includes('/pc')) {
-        window.location.href = "hiddify://import/" + key;
-      } else if (path.includes('/ios')) {
-        window.location.href = "v2raytun://import/" + key;
+      
+      let protoUrl = '';
+      if (platform === 'android' || platform === 'pc') {
+        protoUrl = "hiddify://import/" + key;
+      } else if (platform === 'ios') {
+        protoUrl = "v2raytun://import/" + key;
       } else {
-        document.body.innerHTML = "<h2>Укажите /android, /ios или /pc в URL!</h2>";
+        document.body.innerHTML = "<h2>Укажите platform=android, platform=ios или platform=pc в URL!</h2>";
+        return;
       }
+      
+      // Автоматический запуск
+      setTimeout(() => {
+        openApp(protoUrl);
+      }, 500);
+      
+      // Простая кнопка как fallback
+      document.body.innerHTML = "<h2>Если приложение не открылось автоматически:</h2><button onclick='openApp(\"" + protoUrl + "\")'>Открыть в приложении</button>";
     };
   </script>
 </head>
