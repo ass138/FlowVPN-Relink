@@ -5,16 +5,21 @@
   <title>FlowVPN Relink</title>
   <script>
     window.onload = function() {
-      // Получаем аргумент из query-параметра key
+      const path = window.location.pathname.toLowerCase();
       const params = new URLSearchParams(window.location.search);
       const key = params.get('key');
-      if (key) {
-        // Формируем ссылку
-        const hiddifyUrl = "hiddify://import/" + key;
-        // Редиректим пользователя
-        window.location.href = hiddifyUrl;
-      } else {
+      if (!key) {
         document.body.innerHTML = "<h2>Аргумент не найден в URL!</h2>";
+        return;
+      }
+      if (path.includes('/android')) {
+        window.location.href = "hiddify://import/" + key;
+      } else if (path.includes('/ios')) {
+        window.location.href = "v2raytun://import/" + key;
+      } else if (path.includes('/pc')) {
+        document.body.innerHTML = `<h2>Ваш аргумент:</h2><textarea style='width:90%;height:100px'>${key}</textarea><br><button onclick='navigator.clipboard.writeText(document.querySelector("textarea").value)'>Скопировать</button>`;
+      } else {
+        document.body.innerHTML = "<h2>Укажите /android, /ios или /pc в URL!</h2>";
       }
     };
   </script>
