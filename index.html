@@ -5,10 +5,10 @@
   <title>FlowVPN Relink</title>
   <script>
     window.onload = function() {
-      // Получаем аргумент из URL
-      const match = window.location.pathname.match(/key=(.+)/);
-      if (match && match[1]) {
-        const key = decodeURIComponent(match[1]);
+      // Получаем аргумент из query-параметра key
+      const params = new URLSearchParams(window.location.search);
+      const key = params.get('key');
+      if (key) {
         // Формируем ссылку
         const hiddifyUrl = "hiddify://import/" + key;
         // Редиректим пользователя
